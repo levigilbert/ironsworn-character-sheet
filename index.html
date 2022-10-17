@@ -1,0 +1,455 @@
+<html>
+
+    <head>
+        <script defer src="https://unpkg.com/alpinejs"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body>
+        <div class="grid grid-cols-12 gap-2 m-10">
+            <div class="col-start-1 col-span-3">
+                <div class="text-5xl mb-6 font-thin">
+                    <h1>Ironsworn</h1>
+                </div>
+                <div x-data class="grid grid-cols-5 grid-rows-2 gap-2 justify-items-center mb-6 shadow-md">
+                    <button class="font-semibold text-xl"
+                        @click="$store.dice.actionDie = $store.dice.rollD(6) + ' + ' + $store.stats.edge, $store.dice.rollChallengeDice()">Edge</button>
+                    <button class="font-semibold text-xl"
+                        @click="$store.dice.actionDie = $store.dice.rollD(6) + ' + ' + $store.stats.heart, $store.dice.rollChallengeDice()">Heart</button>
+                    <button class="font-semibold text-xl"
+                        @click="$store.dice.actionDie = $store.dice.rollD(6) + ' + ' + $store.stats.iron, $store.dice.rollChallengeDice()">Iron</button>
+                    <button class="font-semibold text-xl"
+                        @click="$store.dice.actionDie = $store.dice.rollD(6) + ' + ' + $store.stats.shadow, $store.dice.rollChallengeDice()">Shadow</button>
+                    <button class="font-semibold text-xl"
+                        @click="$store.dice.actionDie = $store.dice.rollD(6) + ' + ' + $store.stats.wits, $store.dice.rollChallengeDice()">Wits</button>
+                    <div class="text-lg" x-init="$watch('$store.stats.edge', val => localStorage.setItem('edge', val))">
+                        <button @click="$store.stats.edge--">-</button><span class="p-2"
+                            x-text="$store.stats.edge"></span><button @click="$store.stats.edge++">+</button>
+                    </div>
+                    <div class="text-lg"
+                        x-init="$watch('$store.stats.heart', val => localStorage.setItem('heart', val))">
+                        <button @click="$store.stats.heart--">-</button><span class="p-2"
+                            x-text="$store.stats.heart"></span><button @click="$store.stats.heart++">+</button>
+                    </div>
+                    <div class="text-lg" x-init="$watch('$store.stats.iron', val => localStorage.setItem('iron', val))">
+                        <button @click="$store.stats.iron--">-</button><span class="p-2"
+                            x-text="$store.stats.iron"></span><button @click="$store.stats.iron++">+</button>
+                    </div>
+                    <div class="text-lg"
+                        x-init="$watch('$store.stats.shadow', val => localStorage.setItem('shadow', val))">
+                        <button @click="$store.stats.shadow--">-</button><span class="p-2"
+                            x-text="$store.stats.shadow"></span><button @click="$store.stats.shadow++">+</button>
+                    </div>
+                    <div class="text-lg" x-init="$watch('$store.stats.wits', val => localStorage.setItem('wits', val))">
+                        <button @click="$store.stats.wits--">-</button><span class="p-2"
+                            x-text="$store.stats.wits"></span><button @click="$store.stats.wits++">+</button>
+                    </div>
+                </div>
+                <div class="flex h-64 space-x-4 mb-8">
+                    <div x-data>
+                        <div class="flex flex-col w-16 h-full shadow-md"
+                            x-data="{ health: localStorage.getItem('health') || 5 }"
+                            x-init="$watch('health', val => localStorage.setItem('health', val))">
+                            <button class="border bg-slate-200 font-semibold text-xl"
+                                @click="$store.dice.actionDie = $store.dice.rollD(6) + ' + ' + health, $store.dice.rollChallengeDice()">Health</button>
+                            <button class="border w-full h-full" :class="health == 5 && 'border-black font-bold'"
+                                @click="health = 5">+5</button>
+                            <button class="border w-full h-full" :class="health == 4 && 'border-black font-bold'"
+                                @click="health = 4">+4</button>
+                            <button class="border w-full h-full" :class="health == 3 && 'border-black font-bold'"
+                                @click="health = 3">+3</button>
+                            <button class="border w-full h-full" :class="health == 2 && 'border-black font-bold'"
+                                @click="health = 2">+2</button>
+                            <button class="border w-full h-full" :class="health == 1 && 'border-black font-bold'"
+                                @click="health = 1">+1</button>
+                            <button class="border w-full h-full" :class="health == 0 && 'border-black font-bold'"
+                                @click="health = 0">0</button>
+                        </div>
+                    </div>
+                    <div x-data>
+                        <div class="flex flex-col w-16 h-full shadow-md"
+                            x-data="{ spirit: localStorage.getItem('spirit') || 5 }"
+                            x-init="$watch('spirit', val => localStorage.setItem('spirit', val))">
+                            <button class="border bg-slate-200 font-semibold text-xl"
+                                @click="$store.dice.actionDie = $store.dice.rollD(6) + ' + ' + spirit, $store.dice.rollChallengeDice()">Spirit</button>
+                            <button class="border w-full h-full" :class="spirit == 5 && 'border-black font-bold'"
+                                @click="spirit = 5">+5</button>
+                            <button class="border w-full h-full" :class="spirit == 4 && 'border-black font-bold'"
+                                @click="spirit = 4">+4</button>
+                            <button class="border w-full h-full" :class="spirit == 3 && 'border-black font-bold'"
+                                @click="spirit = 3">+3</button>
+                            <button class="border w-full h-full" :class="spirit == 2 && 'border-black font-bold'"
+                                @click="spirit = 2">+2</button>
+                            <button class="border w-full h-full" :class="spirit == 1 && 'border-black font-bold'"
+                                @click="spirit = 1">+1</button>
+                            <button class="border w-full h-full" :class="spirit == 0 && 'border-black font-bold'"
+                                @click="spirit = 0">0</button>
+                        </div>
+                    </div>
+                    <div x-data>
+                        <div class="flex flex-col w-16 h-full shadow-md"
+                            x-data="{ supply: localStorage.getItem('supply') || 5 }"
+                            x-init="$watch('supply', val => localStorage.setItem('supply', val))">
+                            <button class="border bg-slate-200 font-semibold text-xl"
+                                @click="$store.dice.actionDie = $store.dice.rollD(6) + ' + ' + supply, $store.dice.rollChallengeDice()">Supply</button>
+                            <button class="border w-full h-full" :class="supply == 5 && 'border-black font-bold'"
+                                @click="supply = 5">+5</button>
+                            <button class="border w-full h-full" :class="supply == 4 && 'border-black font-bold'"
+                                @click="supply = 4">+4</button>
+                            <button class="border w-full h-full" :class="supply == 3 && 'border-black font-bold'"
+                                @click="supply = 3">+3</button>
+                            <button class="border w-full h-full" :class="supply == 2 && 'border-black font-bold'"
+                                @click="supply = 2">+2</button>
+                            <button class="border w-full h-full" :class="supply == 1 && 'border-black font-bold'"
+                                @click="supply = 1">+1</button>
+                            <button class="border w-full h-full" :class="supply == 0 && 'border-black font-bold'"
+                                @click="supply = 0">0</button>
+                        </div>
+                    </div>
+                    <div x-data>
+                        <div class="flex flex-col w-48 h-full justify-around shadow-md">
+                            <button class="border bg-slate-200 font-semibold text-xl"
+                                @click="$store.dice.actionDie = $store.dice.rollD(6), $store.dice.rollChallengeDice()">Roll</button>
+                            <button class="border h-full text-2xl"
+                                x-init="$watch('$store.dice.actionDie', val => localStorage.setItem('actionDie', val))"
+                                x-text="$store.dice.actionDie"
+                                @click="$store.dice.actionDie = $store.dice.rollD(6)"></button>
+                            <button class="border bg-slate-200 font-semibold text-xl"
+                                @click="$store.dice.rollChallengeDice()">Challenge
+                                Dice</button>
+                            <div class="flex flex-row h-full">
+                                <button class="border w-full h-full text-2xl"
+                                    x-init="$watch('$store.dice.challengeDie01', val => localStorage.setItem('challengeDie01', val))"
+                                    x-text="$store.dice.challengeDie01"
+                                    @click="$store.dice.challengeDie01 = $store.dice.rollD(10)"></button>
+                                <button class="border w-full h-full text-2xl"
+                                    x-init="$watch('$store.dice.challengeDie02', val => localStorage.setItem('challengeDie02', val))"
+                                    x-text="$store.dice.challengeDie02"
+                                    @click="$store.dice.challengeDie02 = $store.dice.rollD(10)"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-2 text-2xl font-black">
+                    <h2>Debilities</h2>
+                </div>
+                <div class="flex flex-row mb-6">
+                    <div class="w-full">
+                        <h3 class="text-xl">Conditions</h3>
+                        <ul class="list-inside mx-2">
+                            <li><button
+                                    x-data="{ toggleWonded: JSON.parse(localStorage.getItem('toggleWonded') || 'false') }"
+                                    x-init="$watch('toggleWonded', (val) => localStorage.setItem('toggleWonded', JSON.stringify(val)))"
+                                    :class="toggleWonded && 'font-bold'"
+                                    @click="toggleWonded = ! toggleWonded">Wounded</button></li>
+                            <li><button
+                                    x-data="{ toggleShaken: JSON.parse(localStorage.getItem('toggleShaken') || 'false') }"
+                                    x-init="$watch('toggleShaken', val => localStorage.setItem('toggleShaken', JSON.stringify(val)))"
+                                    :class="toggleShaken && 'font-bold'"
+                                    @click="toggleShaken = ! toggleShaken">Shaken</button></li>
+                            <li><button
+                                    x-data="{ toggleUnprepared: JSON.parse(localStorage.getItem('toggleUnprepared') || 'false') }"
+                                    x-init="$watch('toggleUnprepared', val => localStorage.setItem('toggleUnprepared', JSON.stringify(val)))"
+                                    :class="toggleUnprepared && 'font-bold'"
+                                    @click="toggleUnprepared = ! toggleUnprepared">Unprepared</button></li>
+                            <li><button
+                                    x-data="{ toggleEncumbered: JSON.parse(localStorage.getItem('toggleEncumbered') || 'false') }"
+                                    x-init="$watch('toggleEncumbered', val => localStorage.setItem('toggleEncumbered', JSON.stringify(val)))"
+                                    :class="toggleEncumbered && 'font-bold'"
+                                    @click="toggleEncumbered = ! toggleEncumbered">Encumbered</button></li>
+                        </ul>
+                    </div>
+                    <div class="w-full">
+                        <h3 class="text-xl">Banes</h3>
+                        <ul class="list-inside mx-2">
+                            <li><button
+                                    x-data="{ toggleMaimed: JSON.parse(localStorage.getItem('toggleMaimed') || 'false') }"
+                                    x-init="$watch('toggleMaimed', val => localStorage.setItem('toggleMaimed', JSON.stringify(val)))"
+                                    :class="toggleMaimed && 'font-bold'"
+                                    @click="toggleMaimed = ! toggleMaimed">Maimed</button></li>
+                            <li><button
+                                    x-data="{ toggleCorrupted: JSON.parse(localStorage.getItem('toggleCorrupted') || 'false') }"
+                                    x-init="$watch('toggleCorrupted', val => localStorage.setItem('toggleCorrupted', JSON.stringify(val)))"
+                                    :class="toggleCorrupted && 'font-bold'"
+                                    @click="toggleCorrupted = ! toggleCorrupted">Corrupted</button></li>
+                        </ul>
+                    </div>
+                    <div class="w-full">
+                        <h3 class="text-xl">Burdens</h3>
+                        <ul class="list-inside mx-2">
+                            <li><button
+                                    x-data="{ toggleCursed: JSON.parse(localStorage.getItem('toggleCursed') || 'false') }"
+                                    x-init="$watch('toggleCursed', val => localStorage.setItem('toggleCursed', JSON.stringify(val)))"
+                                    :class="toggleCursed && 'font-bold'"
+                                    @click="toggleCursed = ! toggleCursed">Cursed</button></li>
+                            <li><button
+                                    x-data="{ toggleTormented: JSON.parse(localStorage.getItem('toggleTormented') || 'false') }"
+                                    x-init="$watch('toggleTormented', val => localStorage.setItem('toggleTormented', JSON.stringify(val)))"
+                                    :class="toggleTormented && 'font-bold'"
+                                    @click="toggleTormented = ! toggleTormented">Tormented</button></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="flex flex-row">
+                    <h2 class="mb-2 mr-2 text-2xl font-black">XP</h2>
+                    <div class="grid grid-cols-10 grid-rows-2 shadow-md"
+                        x-data="{ xpArray: JSON.parse(localStorage.getItem('xpArray') || '[ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]') }"
+                        x-init="$watch('xpArray', (val) => localStorage.setItem('xpArray', JSON.stringify(val)))">
+                        <template x-for="(xp, index) in xpArray">
+                            <button class="border w-5 h-5" :class="xpArray[index] && 'border-slate-300 bg-black'"
+                                @click="xpArray[index] = ! xpArray[index]"></button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <div class="col-start-4 col-span-1 mx-auto shadow-md">
+                <div class="flex flex-col h-full w-24"
+                    x-data="{ momentum: localStorage.getItem('momentum') || 2, momentumReset: localStorage.getItem('momentumReset') || 2, momentumMax: localStorage.getItem('momentumMax') || 10 }"
+                    x-init="$watch('momentum', val => localStorage.setItem('momentum', val))">
+                    <button class="border bg-slate-200">Momentum</button>
+                    <button class="border w-full h-full" :class="momentum == 10 && 'border-black font-bold'"
+                        @click="momentum = 10">+10</button>
+                    <button class="border w-full h-full" :class="momentum == 9 && 'border-black font-bold'"
+                        @click="momentum = 9">+9</button>
+                    <button class="border w-full h-full" :class="momentum == 8 && 'border-black font-bold'"
+                        @click="momentum = 8">+8</button>
+                    <button class="border w-full h-full" :class="momentum == 7 && 'border-black font-bold'"
+                        @click="momentum = 7">+7</button>
+                    <button class="border w-full h-full" :class="momentum == 6 && 'border-black font-bold'"
+                        @click="momentum = 6">+6</button>
+                    <button class="border w-full h-full" :class="momentum == 5 && 'border-black font-bold'"
+                        @click="momentum = 5">+5</button>
+                    <button class="border w-full h-full" :class="momentum == 4 && 'border-black font-bold'"
+                        @click="momentum = 4">+4</button>
+                    <button class="border w-full h-full" :class="momentum == 3 && 'border-black font-bold'"
+                        @click="momentum = 3">+3</button>
+                    <button class="border w-full h-full" :class="momentum == 2 && 'border-black font-bold'"
+                        @click="momentum = 2">+2</button>
+                    <button class="border w-full h-full" :class="momentum == 1 && 'border-black font-bold'"
+                        @click="momentum = 1">+1</button>
+                    <button class="border w-full h-full" :class="momentum == 0 && 'border-black font-bold'"
+                        @click="momentum = 0">0</button>
+                    <button class="border w-full h-full" :class="momentum == -1 && 'border-black font-bold'"
+                        @click="momentum = -1">-1</button>
+                    <button class="border w-full h-full" :class="momentum == -2 && 'border-black font-bold'"
+                        @click="momentum = -2">-2</button>
+                    <button class="border w-full h-full" :class="momentum == -3 && 'border-black font-bold'"
+                        @click="momentum = -3">-3</button>
+                    <button class="border w-full h-full" :class="momentum == -4 && 'border-black font-bold'"
+                        @click="momentum = -4">-4</button>
+                    <button class="border w-full h-full" :class="momentum == -5 && 'border-black font-bold'"
+                        @click="momentum = -5">-5</button>
+                    <button class="border w-full h-full" :class="momentum == -6 && 'border-black font-bold'"
+                        @click="momentum = -6">-6</button>
+                    <button class="border bg-slate-200">Max</button>
+                    <div class="flex flex-row text-lg border w-full place-content-between p-2"
+                        x-init="$watch('momentumMax', val => localStorage.setItem('momentumMax', val))">
+                        <button @click="momentumMax--">-</button><span x-text="momentumMax"></span><button
+                            @click="momentumMax++">+</button>
+                    </div>
+                    <button class="border bg-slate-200 font-semibold" @click="momentum = momentumReset">Reset</button>
+                    <div class="flex flex-row text-lg border w-full place-content-between p-2"
+                        x-init="$watch('momentumReset', val => localStorage.setItem('momentumReset', val))">
+                        <button @click="momentumReset--">-</button><span x-text="momentumReset"></span><button
+                            @click="momentumReset++">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-start-5 col-span-3">
+                <div class="mb-6">
+                    <div class="text-2xl font-black mb-3">
+                        <h2>Bonds</h2>
+                    </div>
+                    <input
+                        class="placeholder:italic placeholder:text-slate-400 w-full border border-slate-300 p-1 m-2 focus:outline-none focuse:border-sky-500 focus:ring-sky-500"
+                        placeholder="Description..." type="text" name="bonds" />
+                    <div class="flex flex-row h-10 shadow-md"
+                        x-data="{ bonds: JSON.parse(localStorage.getItem('bonds') || '[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]') }"
+                        x-init="$watch('bonds', (val) => localStorage.setItem('bonds', JSON.stringify(val)))">
+                        <template x-for="(bond, index) in bonds">
+                            <button class="border w-full h-full" :class="bonds[index] == 4 && 'border-black font-bold'"
+                                @click="bonds[index] = (bonds[index] + 1) % 5" x-text="bonds[index]"></button>
+                        </template>
+                    </div>
+                </div>
+                <div>
+                    <div class="mb-6">
+                        <div class="text-2xl font-black mb-3">
+                            <h2>Vows</h2>
+                        </div>
+                        <input
+                            class="placeholder:italic placeholder:text-slate-400 w-full border border-slate-300 p-1 m-2 focus:outline-none focuse:border-sky-500 focus:ring-sky-500"
+                            placeholder="Description..." type="text" name="vows01" />
+                        <div class="flex flex-row h-10 justify-around text-sm"
+                            x-data="{ vowType01: localStorage.getItem('vowType01') }"
+                            x-init="$watch('vowType01', val => localStorage.setItem('vowType01', val))">
+                            <button :class="vowType01 == 'troublesome' && 'font-bold'"
+                                @click="vowType01 = 'troublesome'">Troublesome</button>
+                            <button :class="vowType01 == 'dangerous' && 'font-bold'"
+                                @click="vowType01 = 'dangerous'">Dangerous</button>
+                            <button :class="vowType01 == 'formidable' && 'font-bold'"
+                                @click="vowType01 = 'formidable'">Formidable</button>
+                            <button :class="vowType01 == 'extreme' && 'font-bold'"
+                                @click="vowType01 = 'extreme'">Extreme</button>
+                            <button :class="vowType01 == 'epic' && 'font-bold'"
+                                @click="vowType01 = 'epic'">Epic</button>
+                        </div>
+                        <div class="flex flex-row h-10 shadow-md"
+                            x-data="{ vowsArray01: JSON.parse(localStorage.getItem('vowsArray01') || '[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]') }"
+                            x-init="$watch('vowsArray01', (val) => localStorage.setItem('vowsArray01', JSON.stringify(val)))">
+                            <template x-for="(vow, index) in vowsArray01">
+                                <button class="border w-full h-full"
+                                    :class="vowsArray01[index] == 4 && 'border-black font-bold'"
+                                    @click="vowsArray01[index] = (vowsArray01[index] + 1) % 5"
+                                    x-text="vowsArray01[index]"></button>
+                            </template>
+                        </div>
+                    </div>
+                    <div>
+                        <input
+                            class="placeholder:italic placeholder:text-slate-400 w-full border border-slate-300 p-1 m-2 focus:outline-none focuse:border-sky-500 focus:ring-sky-500"
+                            placeholder="Description..." type="text" name="vows02" />
+                        <div class="flex flex-row h-10 justify-around text-sm"
+                            x-data="{ vowType02: localStorage.getItem('vowType02') }"
+                            x-init="$watch('vowType02', val => localStorage.setItem('vowType02', val))">
+                            <button :class="vowType02 == 'troublesome' && 'font-bold'"
+                                @click="vowType02 = 'troublesome'">Troublesome</button>
+                            <button :class="vowType02 == 'dangerous' && 'font-bold'"
+                                @click="vowType02 = 'dangerous'">Dangerous</button>
+                            <button :class="vowType02 == 'formidable' && 'font-bold'"
+                                @click="vowType02 = 'formidable'">Formidable</button>
+                            <button :class="vowType02 == 'extreme' && 'font-bold'"
+                                @click="vowType02 = 'extreme'">Extreme</button>
+                            <button :class="vowType02 == 'epic' && 'font-bold'"
+                                @click="vowType02 = 'epic'">Epic</button>
+                        </div>
+                        <div class="flex flex-row h-10 shadow-md"
+                            x-data="{ vowsArray02: JSON.parse(localStorage.getItem('vowsArray02') || '[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]') }"
+                            x-init="$watch('vowsArray02', (val) => localStorage.setItem('vowsArray02', JSON.stringify(val)))">
+                            <template x-for="(vow, index) in vowsArray02">
+                                <button class="border w-full h-full"
+                                    :class="vowsArray02[index] == 4 && 'border-black font-bold'"
+                                    @click="vowsArray02[index] = (vowsArray02[index] + 1) % 5"
+                                    x-text="vowsArray02[index]"></button>
+                            </template>
+                        </div>
+                    </div>
+                    <div>
+                        <input
+                            class="placeholder:italic placeholder:text-slate-400 w-full border border-slate-300 p-1 m-2 focus:outline-none focuse:border-sky-500 focus:ring-sky-500"
+                            placeholder="Description..." type="text" name="vows03" />
+                        <div class="flex flex-row h-10 justify-around text-sm"
+                            x-data="{ vowType03: localStorage.getItem('vowType03') }"
+                            x-init="$watch('vowType03', val => localStorage.setItem('vowType03', val))">
+                            <button :class="vowType03 == 'troublesome' && 'font-bold'"
+                                @click="vowType03 = 'troublesome'">Troublesome</button>
+                            <button :class="vowType03 == 'dangerous' && 'font-bold'"
+                                @click="vowType03 = 'dangerous'">Dangerous</button>
+                            <button :class="vowType03 == 'formidable' && 'font-bold'"
+                                @click="vowType03 = 'formidable'">Formidable</button>
+                            <button :class="vowType03 == 'extreme' && 'font-bold'"
+                                @click="vowType03 = 'extreme'">Extreme</button>
+                            <button :class="vowType03 == 'epic' && 'font-bold'"
+                                @click="vowType03 = 'epic'">Epic</button>
+                        </div>
+                        <div class="flex flex-row h-10 shadow-md"
+                            x-data="{ vowsArray03: JSON.parse(localStorage.getItem('vowsArray03') || '[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]') }"
+                            x-init="$watch('vowsArray03', (val) => localStorage.setItem('vowsArray03', JSON.stringify(val)))">
+                            <template x-for="(vow, index) in vowsArray03">
+                                <button class="border w-full h-full"
+                                    :class="vowsArray03[index] == 4 && 'border-black font-bold'"
+                                    @click="vowsArray03[index] = (vowsArray03[index] + 1) % 5"
+                                    x-text="vowsArray03[index]"></button>
+                            </template>
+                        </div>
+                    </div>
+                    <div>
+                        <input
+                            class="placeholder:italic placeholder:text-slate-400 w-full border border-slate-300 p-1 m-2 focus:outline-none focuse:border-sky-500 focus:ring-sky-500"
+                            placeholder="Description..." type="text" name="vows04" />
+                        <div class="flex flex-row h-10 justify-around text-sm"
+                            x-data="{ vowType04: localStorage.getItem('vowType04') }"
+                            x-init="$watch('vowType04', val => localStorage.setItem('vowType04', val))">
+                            <button :class="vowType04 == 'troublesome' && 'font-bold'"
+                                @click="vowType04 = 'troublesome'">Troublesome</button>
+                            <button :class="vowType04 == 'dangerous' && 'font-bold'"
+                                @click="vowType04 = 'dangerous'">Dangerous</button>
+                            <button :class="vowType04 == 'formidable' && 'font-bold'"
+                                @click="vowType04 = 'formidable'">Formidable</button>
+                            <button :class="vowType04 == 'extreme' && 'font-bold'"
+                                @click="vowType04 = 'extreme'">Extreme</button>
+                            <button :class="vowType04 == 'epic' && 'font-bold'"
+                                @click="vowType04 = 'epic'">Epic</button>
+                        </div>
+                        <div class="flex flex-row h-10 shadow-md"
+                            x-data="{ vowsArray04: JSON.parse(localStorage.getItem('vowsArray04') || '[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]') }"
+                            x-init="$watch('vowsArray04', (val) => localStorage.setItem('vowsArray04', JSON.stringify(val)))">
+                            <template x-for="(vow, index) in vowsArray04">
+                                <button class="border w-full h-full"
+                                    :class="vowsArray04[index] == 4 && 'border-black font-bold'"
+                                    @click="vowsArray04[index] = (vowsArray04[index] + 1) % 5"
+                                    x-text="vowsArray04[index]"></button>
+                            </template>
+                        </div>
+                    </div>
+                    <div>
+                        <input
+                            class="placeholder:italic placeholder:text-slate-400 w-full border border-slate-300 p-1 m-2 focus:outline-none focuse:border-sky-500 focus:ring-sky-500"
+                            placeholder="Description..." type="text" name="vows05" />
+                        <div class="flex flex-row h-10 justify-around text-sm"
+                            x-data="{ vowType05: localStorage.getItem('vowType05') }"
+                            x-init="$watch('vowType05', val => localStorage.setItem('vowType05', val))">
+                            <button :class="vowType05 == 'troublesome' && 'font-bold'"
+                                @click="vowType05 = 'troublesome'">Troublesome</button>
+                            <button :class="vowType05 == 'dangerous' && 'font-bold'"
+                                @click="vowType05 = 'dangerous'">Dangerous</button>
+                            <button :class="vowType05 == 'formidable' && 'font-bold'"
+                                @click="vowType05 = 'formidable'">Formidable</button>
+                            <button :class="vowType05 == 'extreme' && 'font-bold'"
+                                @click="vowType05 = 'extreme'">Extreme</button>
+                            <button :class="vowType05 == 'epic' && 'font-bold'"
+                                @click="vowType05 = 'epic'">Epic</button>
+                        </div>
+                        <div class="flex flex-row h-10 shadow-md"
+                            x-data="{ vowsArray05: JSON.parse(localStorage.getItem('vowsArray05') || '[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]') }"
+                            x-init="$watch('vowsArray05', (val) => localStorage.setItem('vowsArray05', JSON.stringify(val)))">
+                            <template x-for="(vow, index) in vowsArray05">
+                                <button class="border w-full h-full"
+                                    :class="vowsArray05[index] == 4 && 'border-black font-bold'"
+                                    @click="vowsArray05[index] = (vowsArray05[index] + 1) % 5"
+                                    x-text="vowsArray05[index]"></button>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.store('dice', {
+                    actionDie: localStorage.getItem('actionDie') || 6,
+                    challengeDie01: localStorage.getItem('challengeDie01') || 10,
+                    challengeDie02: localStorage.getItem('challengeDie02') || 10,
+
+                    rollD(max) {
+                        return 1 + Math.floor(Math.random() * max);
+                    },
+
+                    rollChallengeDice() {
+                        this.challengeDie01 = this.rollD(10);
+                        this.challengeDie02 = this.rollD(10);
+                    }
+                }),
+
+                    Alpine.store('stats', {
+                        edge: localStorage.getItem('edge') || 3,
+                        heart: localStorage.getItem('heart') || 2,
+                        iron: localStorage.getItem('iron') || 2,
+                        shadow: localStorage.getItem('shadow') || 1,
+                        wits: localStorage.getItem('wits') || 1
+                    })
+            })
+        </script>
+    </body>
+
+</html>
